@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Employee Platform</title>
+
+  <style>
+
+    body {
+      margin: 0;
+      padding: 40px;
+      background: #0f172a;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      color: #38bdf8;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 6px;
+      background: #334155;
+      color: white;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #334155;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background: #334155;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Employee Management Platform</h1>
+
+  <div class="card">
+
+    <h2>Add Employee</h2>
+
+    <input type="text" id="name" placeholder="Employee Name">
+    <input type="email" id="email" placeholder="Employee Email">
+    <input type="text" id="department" placeholder="Department">
+    <input type="number" id="salary" placeholder="Salary">
+
+    <button onclick="addEmployee()">Add Employee</button>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Employees</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Department</th>
+          <th>Salary</th>
+        </tr>
+      </thead>
+
+      <tbody id="employeeTable"></tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+
+async function fetchEmployees() {
+
+  const response = await fetch("/api/employees");
+
+  const employees = await response.json();
+
+  const table = document.getElementById("employeeTable");
+
+  table.innerHTML = "";
+
+  employees.forEach(function(emp) {
+
+    const row = `
+      <tr>
+        <td>${emp.id}</td>
+        <td>${emp.name}</td>
+        <td>${emp.email}</td>
+        <td>${emp.department}</td>
+        <td>${emp.salary}</td>
+      </tr>
+    `;
+
+    table.innerHTML += row;
+
+  });
+
+}
+
+async function addEmployee() {
+
+  const employee = {
+
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    department: document.getElementById("department").value,
+    salary: document.getElementById("salary").value
+
+  };
+
+  await fetch("/api/employees", {
+
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify(employee)
+
+  });
+
+  fetchEmployees();
+
+}
+
+fetchEmployees();
+
+</script>
+
+</body>
+</html>

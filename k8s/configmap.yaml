@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+
+
+metadata:
+  name: backend-config
+  namespace: employee-platform
+
+data:
+  MYSQL_HOST: mysql-service
+  MYSQL_DATABASE: employees_db
+  PORT: "3000"

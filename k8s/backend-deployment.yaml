@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: backend
+  namespace: employee-platform
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: backend
+
+  template:
+
+    metadata:
+      labels:
+        app: backend
+
+    spec:
+
+      containers:
+
+        - name: backend
+
+          image: employee-backend:latest
+
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 3000
+
+          env:
+
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: MYSQL_HOST
+
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: MYSQL_DATABASE
+
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: PORT
+
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: MYSQL_USER
+
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: MYSQL_PASSWORD

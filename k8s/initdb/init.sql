@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS employees (
+
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100),
+  email VARCHAR(100),
+  department VARCHAR(100),
+  salary INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
